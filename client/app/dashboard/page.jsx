@@ -1,7 +1,3 @@
-require('dotenv').config({
-  path: require('path').resolve(__dirname, '../.env')
-});
-
 const CATEGORY_COLORS = {
   housing: "bg-red-400",
   food: "bg-orange-400",
@@ -41,7 +37,7 @@ export default async function Dashboard() {
 
       <div className="bg-gray-100 rounded-xl p-6 text-center mb-4">
         <p className="text-sm text-gray-500 font-semibold mb-1">Running Balance</p>
-        <p className="text-4xl font-semibold text-green-600">${balance.toFixed(2)}</p>
+        <p className={`text-4xl font-semibold ${balance >= 0 ? "text-green-600" : "text-red-600"} `}>${balance.toFixed(2)}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">

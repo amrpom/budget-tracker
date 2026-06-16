@@ -1,11 +1,13 @@
 const express = require('express');
 const db = require('./db');
+const cors = require('cors');
 
 const app = express();
 const transactionsRouter = require('./routes/transactions');
 const port = 3001;
 
 app.use(express.json());
+app.use(cors());
 app.use('/transactions', transactionsRouter);
 
 app.get('/', async (req, res) => {
