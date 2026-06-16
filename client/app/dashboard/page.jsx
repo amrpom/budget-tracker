@@ -1,22 +1,39 @@
+require('dotenv').config({
+  path: require('path').resolve(__dirname, '../.env')
+});
 
-const categories = [
-  { name: "Housing", amount: 1200, color: "bg-red-400" },
-  { name: "Food", amount: 460, color: "bg-orange-400" },
-  { name: "Transport", amount: 200, color: "bg-blue-400" },
-  { name: "Other", amount: 99.50, color: "bg-gray-400" },
-];
+const CATEGORY_COLORS = {
+  housing: "bg-red-400",
+  food: "bg-orange-400",
+  transport: "bg-blue-400",
+  entertainment: "bg-purple-400",
+  health: "bg-pink-400",
+  salary: "bg-green-400",
+  other: "bg-gray-400",
+};
 
-const recentTransactions = [
-  { id: 1, title: "rent", category: "Housing", amount: 1200, date: "2026-15-06", type: "expense" },
-  { id: 2, title: "groceries", category: "Food", amount: 150, date: "2026-14-06", type: "expense" },
-  { id: 3, title: "salary", category: "Income", amount: 5200, date: "2026-01-06", type: "income" },
-];
+export default async function Dashboard() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, { cache: "no-store" }); // no-store stops it from showing the same data between reloads
+  const transactions = await res.json();
 
-export default function Dashboard() {
-  const balance = 3240.50;
-  const totalIncome = 5200.00;
-  const totalExpenses = 1959.50;
-  const maxAmount = Math.max(...categories.map(c => c.amount));
+  const totalIncome = transactions.filter(transaction => transaction.type == "income").reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+  const totalExpenses = transactions.filter(transaction => transaction.type == "expense").reduce((sum, transaction) => sum + Number(transaction.amount), 0);
+  const balance = totalIncome - totalExpenses;
+
+  const categoryTotals = transactions.filter(transaction => transaction.type == "expense").reduce((sum, transaction) => {
+    sum[transaction.category] = (sum[transaction.category] || 0) + Number(transaction.amount);
+    return sum;
+  }, {});
+
+  const categories = Object.entries(categoryTotals).map(([name, amount]) => ({ // Object.entries converts object into array of key value pairs. builds new object for each pair
+    name,
+    amount,
+    color: CATEGORY_COLORS[name] || "bg-gray-400",
+  }));
+
+  const recentTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+
+  const maxAmount = categories.length > 0 ? Math.max(...categories.map(c => c.amount)) : 1;
 
   return (
     <div className="p-4">
@@ -67,10 +84,10 @@ export default function Dashboard() {
               <div key={transaction.id} className={`flex justify-between items-center py-2 ${index !== recentTransactions.length - 1 ? "border-b border-gray-200" : ""}`}>
                 <div>
                   <p className="text-sm">{transaction.title}</p>
-                  <p className="text-xs text-gray-400">{transaction.category} | {transaction.date}</p>
+                  <p className="text-xs text-gray-400">{transaction.category} | {new Date(transaction.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</p>
                 </div>
                 <div>
-                  <p className={`text-sm font-semibold ${transaction.type === "income" ? "text-green-500" : "text-red-500"}`}>{transaction.type === "income" ? "+" : "-"}${transaction.amount.toFixed(2)}</p>
+                  <p className={`text-sm font-semibold ${transaction.type === "income" ? "text-green-500" : "text-red-500"}`}>{transaction.type === "income" ? "+" : "-"}${Number(transaction.amount).toFixed(2)}</p>
                 </div>
               </div>
             ))
