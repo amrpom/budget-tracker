@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const CATEGORY_COLORS = {
   housing: "bg-red-400",
   food: "bg-orange-400",
@@ -73,7 +75,7 @@ export default async function Dashboard() {
 
       <div className="bg-gray-100 rounded-xl p-4 mt-4">
         <p className="text-xs text-gray-500 font-semibold mb-3">Recent Transactions</p>
-        <a href="/transactions" className="text-xs text-blue-500">See all</a>
+        <Link href="/transactions" className="text-xs text-blue-500">See all</Link>
         <div className="flex flex-col text-gray-500">
           {
             recentTransactions.map((transaction, index) => (
