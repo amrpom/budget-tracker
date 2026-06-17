@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react"; 
+import { useState, useEffect } from "react"; 
+import { useSearchParams } from "next/navigation";
 
 const CATEGORIES = ["Housing", "Food", "Transport", "Entertainment", "Health", "Salary", "Other"];
 
@@ -11,9 +12,32 @@ export default function Form() {
     const [category, setCategory] = useState("");
     const [date, setDate] = useState("");
 
+    const searchParams = useSearchParams();
+    const editId = searchParams.get("id");
+
+    useEffect(() => {
+        if (!editId) return;
+
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${editId}`)
+            .then(res => res.json())
+            .then(data => {
+                setTitle(data.title);
+                setAmount(data.amount);
+                setType(data.type);
+                setCategory(data.category);
+                setDate(data.date.split("T")[0]); // to handle postgres result being a different format 
+            })
+    }, [editId]);
+
     async function handleSubmit() {
+        const url = editId ?
+            `${process.env.NEXT_PUBLIC_API_URL}/transactions/${editId}` :
+            `${process.env.NEXT_PUBLIC_API_URL}/transactions`;
+
+        const method = editId ? "PUT" : "POST";
+
         await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
-            method: "POST",
+            method: method,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 title, amount, type, category, date, created_at: new Date().toISOString()
@@ -23,7 +47,7 @@ export default function Form() {
 
     return (
         <div className="p-4">
-            <h1 className="text-xl font-semibold mb-4">New transaction</h1>
+            <h1 className="text-xl font-semibold mb-4">{editId ? "Edit Transaction" : "New Transaction"}</h1>
 
             <div className="flex bg-gray-100 rounded-xl p-1 gap-1">
                 <div onClick={() => setType("expense")} className={`flex-1 text-center py-2 rounded-lg text-sm font-medium cursor-pointer ${type === "expense" ? "bg-orange-100 text-orange-700" : "text-gray-500"}`}>
@@ -67,7 +91,7 @@ export default function Form() {
                 </div>
             </div>
 
-            <button onClick={handleSubmit} className="w-full bg-gray-900 text-white rounded-xl py-3 mt-6 font-medium text-sm cursor-pointer">Save Transaction</button>
+            <button onClick={handleSubmit} className="w-full bg-gray-900 text-white rounded-xl py-3 mt-6 font-medium text-sm cursor-pointer">{editId ? "Update" : "Save"}</button>
         </div>
     );
 }

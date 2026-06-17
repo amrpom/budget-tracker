@@ -10,6 +10,20 @@ async function getAll(req, res) {
 	}
 }
 
+async function getOne(req, res) {
+	try {
+		const {id} = req.params;
+		const result = await db.query('SELECT * FROM transactions WHERE id=$1', [id]);
+		if (result.rows.length === 0) {
+			return res.status(404).send('Transaction not found');
+		}
+		res.json(result.rows[0]);
+	} catch (err) {
+		console.error(err);
+		res.status(500).send('Internal Server Error');
+	}
+}
+
 async function create(req, res) {
 	try {
 		const { title, amount, type, category, date, created_at } = req.body;
@@ -50,4 +64,4 @@ async function remove(req, res) {
 	}
 }
 
-module.exports = { getAll, create, update, remove };
+module.exports = { getAll, getOne, create, update, remove };
