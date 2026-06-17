@@ -1,3 +1,5 @@
+import DeleteButton from "./DeleteButton";
+
 export default async function Transactions() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, { cache: "no-store"});
     const transactions = await res.json();
@@ -18,7 +20,7 @@ export default async function Transactions() {
                                 <p className={`text-sm font-semibold ${transaction.type === "income" ? "text-green-500" : "text-red-500"}`}>{transaction.type === "income" ? "+" : "-"}${Number(transaction.amount).toFixed(2)}</p>
                                 <div className="flex gap-2">
                                     <a href={`/form?id=${transaction.id}`} className="text-xs text-blue-500">Edit</a>
-                                    <button className="text-xs text-red-500 cursor-pointer">Delete</button>
+                                    <DeleteButton id={transaction.id}/>
                                 </div>
                             </div>
                             
