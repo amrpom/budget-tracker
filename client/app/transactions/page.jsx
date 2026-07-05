@@ -2,7 +2,7 @@ import DeleteButton from "./DeleteButton";
 import Link from "next/link";
 
 export default async function Transactions() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, { cache: "no-store"});
+    const res = await fetch(`${process.env.API_URL}/transactions`, { cache: "no-store"});
     const transactions = await res.json();
 
     return(

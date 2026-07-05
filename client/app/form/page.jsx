@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react"; 
+import { useState, useEffect, Suspense } from "react"; 
 import { useSearchParams } from "next/navigation";
 
 const CATEGORIES = ["Housing", "Food", "Transport", "Entertainment", "Health", "Salary", "Other"];
 
-export default function Form() {
+function FormContent() {
     const [type, setType] = useState("expense");
     const [amount, setAmount] = useState("");
     const [title, setTitle] = useState("");
@@ -36,7 +36,7 @@ export default function Form() {
 
         const method = editId ? "PUT" : "POST";
 
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
+        await fetch(url, {
             method: method,
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -93,6 +93,14 @@ export default function Form() {
 
             <button onClick={handleSubmit} className="w-full bg-gray-900 text-white rounded-xl py-3 mt-6 font-medium text-sm cursor-pointer">{editId ? "Update" : "Save"}</button>
         </div>
+    );
+}
+
+export default function Form() {
+    return (
+        <Suspense fallback={<div className="p-4">Loading...</div>}>
+            <FormContent />
+        </Suspense>
     );
 }
 

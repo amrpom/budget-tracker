@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  server:
+    build: ./server
+    restart: always
+    environment:
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: ${PGDATABASE}
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+
+  client:
+    build: ./client
+    restart: always
+    environment:
+      API_URL: http://server:3001
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - server
+volumes:
+  pgdata:
