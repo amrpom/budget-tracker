@@ -16,6 +16,7 @@ describe('getAll', () => {
             send: jest.fn()
         };
         jest.clearAllMocks();
+        jest.spyOn(console, 'error').mockImplementation(() => {});
     });
 
     it('should return all transactions', async () => {
