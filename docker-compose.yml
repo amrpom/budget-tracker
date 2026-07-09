@@ -21,6 +21,7 @@ services:
       PGHOST: db
       PGPORT: 5432
       PGDATABASE: ${PGDATABASE}
+      JWT_SECRET: ${JWT_SECRET}
     ports:
       - "3001:3001"
     depends_on:
