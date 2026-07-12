@@ -26,6 +26,7 @@ export default function Login() {
             return;
         }
 
+        router.refresh();
         router.push("/dashboard");
     }
 
@@ -51,11 +52,7 @@ export default function Login() {
                     <button className="w-full bg-gray-900 text-white rounded-xl py-3 font-medium text-sm cursor-pointer mt-2" onClick={handleSubmit}>Sign in</button>
                     <p className="text-xs text-center text-gray-500">Don't have an account? <a href="/signup" className="text-blue-500">Sign up</a></p>
                 </div>
-                
-          
-            </div>      
-
-
+            </div>
         </div>
     );
 }

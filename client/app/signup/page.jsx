@@ -26,6 +26,7 @@ export default function Signup() {
             return;
         }
 
+        router.refresh();
         router.push("/dashboard");
     }
 

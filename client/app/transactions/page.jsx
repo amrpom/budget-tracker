@@ -1,4 +1,4 @@
-import DeleteButton from "./DeleteButton";
+import DeleteButton from "../components/DeleteButton";
 import Link from "next/link";
 import { cookies } from "next/headers";
 

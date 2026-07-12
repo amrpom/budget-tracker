@@ -61,4 +61,18 @@ async function login(req, res) {
     }
 }
 
-module.exports = { signup, login }
+async function logout(req, res) {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            sameSite: 'lax'
+        });
+        res.status(200).send({ message: 'Logged out successfully'});
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal server error');
+    }
+}
+
+module.exports = { signup, login, logout }
