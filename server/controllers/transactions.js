@@ -57,7 +57,7 @@ async function remove(req, res) {
 	try {
 		const { id } = req.params;
 		// RETURNING id so it can check if anything actually got removed afterwards
-		await db.query('DELETE FROM transactions WHERE id=$1 AND user_id=$2 RETURNING id', [id, req.userId]);
+		const result = await db.query('DELETE FROM transactions WHERE id=$1 AND user_id=$2 RETURNING id', [id, req.userId]);
 
 		if (result.rows.length === 0) {
 			return res.status(404).send('Transaction not found');

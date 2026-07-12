@@ -67,7 +67,7 @@ async function logout(req, res) {
             httpOnly: true,
             sameSite: 'lax'
         });
-        res.status(200).send({ message: 'Logged out successfully'});
+        res.status(200).json({ message: 'Logged out successfully'});
 
     } catch (err) {
         console.error(err);
