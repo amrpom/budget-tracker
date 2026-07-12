@@ -8,6 +8,10 @@ const transactionsRouter = require('./routes/transactions');
 const authRouter = require('./routes/auth');
 const port = 3001;
 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 app.use(cookieParser()); // must come before routes, otherwise they try to read cookies before being able to parse them
 app.use('/transactions', transactionsRouter);
