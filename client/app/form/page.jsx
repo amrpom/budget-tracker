@@ -18,7 +18,9 @@ function FormContent() {
     useEffect(() => {
         if (!editId) return;
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${editId}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${editId}`, {
+            credentials: 'include'
+        })
             .then(res => res.json())
             .then(data => {
                 setTitle(data.title);
@@ -39,6 +41,7 @@ function FormContent() {
         await fetch(url, {
             method: method,
             headers: { "Content-Type": "application/json" },
+            credentials: 'include',
             body: JSON.stringify({
                 title, amount, type, category, date, created_at: new Date().toISOString()
             })

@@ -1,8 +1,17 @@
 import DeleteButton from "./DeleteButton";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 export default async function Transactions() {
-    const res = await fetch(`${process.env.API_URL}/transactions`, { cache: "no-store"});
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    const res = await fetch(`${process.env.API_URL}/transactions`, { 
+    cache: "no-store",
+    headers: {
+        Cookie: `token=${token}`
+    }
+    });
     const transactions = await res.json();
 
     return(

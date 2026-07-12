@@ -28,11 +28,14 @@ services:
       - db
 
   client:
-    build: ./client
+    build: 
+      context: ./client
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     restart: always
     environment:
-      API_URL: http://server:3001
-      NEXT_PUBLIC_API_URL: http://localhost:3001
+      API_URL: ${API_URL}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     ports: 
       - "3000:3000"
     depends_on:

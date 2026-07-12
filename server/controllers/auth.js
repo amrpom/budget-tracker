@@ -20,7 +20,12 @@ async function signup(req, res) {
         const user = result.rows[0];
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d'});
 
-        res.status(201).json({ token });
+        res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+        res.status(201).json({ message: 'Signed up successfully'});
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal server error');
@@ -43,7 +48,13 @@ async function login(req, res) {
         }
 
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '7d'});
-        return res.status(200).json({token});
+        
+        res.cookie('token', token, {
+            httpOnly: true,
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000 //matches 7 days in JWT
+        });
+        res.status(201).json({ message: 'Logged in successfully'});
     } catch(err) {
         console.error(err);
         res.status(500).send('Internal server error');

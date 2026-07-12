@@ -6,7 +6,10 @@ export default function DeleteButton({id}) {
     const router = useRouter();
 
     async function handleDelete() {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${id}`, { method: "DELETE"});
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/${id}`, { 
+            method: "DELETE",
+            credentials: 'include'
+        });
         router.refresh(); // makes server component refresh so deleted transactions disappear
     }
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./db');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const transactionsRouter = require('./routes/transactions');
@@ -8,7 +9,7 @@ const authRouter = require('./routes/auth');
 const port = 3001;
 
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser()); // must come before routes, otherwise they try to read cookies before being able to parse them
 app.use('/transactions', transactionsRouter);
 app.use('/auth', authRouter);
 

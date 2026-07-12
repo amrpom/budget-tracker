@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 const CATEGORY_COLORS = {
   housing: "bg-red-400",
@@ -11,7 +12,16 @@ const CATEGORY_COLORS = {
 };
 
 export default async function Dashboard() {
-  const res = await fetch(`${process.env.API_URL}/transactions`, { cache: "no-store" }); // no-store stops it from showing the same data between reloads
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+
+  const res = await fetch(`${process.env.API_URL}/transactions`, { 
+    cache: "no-store",
+    headers: {
+      Cookie: `token=${token}`
+    }
+  }); // no-store stops it from showing the same data between reloads
+  
   const transactions = await res.json();
 
   const totalIncome = transactions.filter(transaction => transaction.type == "income").reduce((sum, transaction) => sum + Number(transaction.amount), 0);
