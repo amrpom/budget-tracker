@@ -2,15 +2,18 @@
 A full-stack budget tracking app for managing income/expenses. Built with Next.js, Express, and PostgreSQL. Containerized with Docker.
 
 ## Features
+- User auth
 - Add, edit, and delete transactions (income or expense)
 - Categorize transactions (Housing, Food, Transport, Entertainment, Health, Salary, Other)
 - Dashboard with running balance, income/expense summary, and spending by category
 - Full transaction list with edit and delete actions
+- Each user only sees their own info
 
 ## Tech Stack
 - **Frontend:** Next.js 15, Tailwind CSS
 - **Backend:** Node.js, Express
 - **Database:** PostgreSQL
+- **Auth**: JWT with jsonwebtoken and bcrypt
 - **Containerization:** Docker, Docker Compose
 
 ## How to Run
@@ -20,9 +23,8 @@ Requires Docker installed and running.
 
     - PGUSER=your_db_user
     - PGPASSWORD=your_db_password
-    - PGHOST=db
-    - PGPORT=5432
     - PGDATABASE=your_db_name
+    - JWT_SECRET=your_secret (to add this, run `node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"`)
 3. Create a .env file in the client/ folder, filling in the API URL:
 
     - NEXT_PUBLIC_API_URL=http://localhost:3001
@@ -32,6 +34,16 @@ Requires Docker installed and running.
 5. Access http://localhost:3000/dashboard in the browser.
 6. To stop it, `docker compose down`. To wipe the DB volume, add the `-v` flag.
 
+## Auth
+- Passwords hashed with bcrypt before storage
+- Server sets HTTP only JWT cookie
+- Cookies sent with requests
+- Server middleware checks for the cookie
+- Queries to DB filtered by user_id so viewers only see their own stuff
+
 ## Workflows
 - Unit tests for transactions runs automatically via GitHub Actions. To run them locally, cd to /server from the project root and run `npm test`.
 
+### Notes
+- To remote into DB, `docker exec -it $(docker compose ps -q db) psql -U postgres -d budget`
+- To curl new user, `Invoke-WebRequest -Uri "http://localhost:3001/auth/signup" -Method POST -Headers @{"Content-Type"="application/json"} -Body '{"email":"test@example.com","password":"password123"}'`
