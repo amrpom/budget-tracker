@@ -2,7 +2,28 @@ const db = require('../db');
 
 async function getAll(req, res) {
 	try {
-		const result = await db.query('SELECT * FROM transactions WHERE user_id=$1', [req.userId]);
+		const { category, from, to } = req.query;
+		let query = 'SELECT * FROM transactions WHERE user_id=$1';
+		const params = [req.userId];
+
+		if (category) {
+			params.push(category);
+			query += ` AND category=$${params.length}`; // always takes last thing on the list (here it's category)
+		}
+
+		if (from) {
+			params.push(from);
+			query += ` AND date >=$${params.length}`; 
+		}
+
+		if (to) {
+			params.push(to);
+			query += ` AND date <=$${params.lenghth}`;
+		}
+
+		query += ' ORDER BY date DESC'; // so newest is first
+
+		const result = await db.query(query, params);
 		res.json(result.rows);
 	} catch (err) {
 		console.error(err);
