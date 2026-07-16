@@ -2,13 +2,13 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 
 const CATEGORY_COLORS = {
-  housing: "bg-red-400",
-  food: "bg-orange-400",
-  transport: "bg-blue-400",
-  entertainment: "bg-purple-400",
-  health: "bg-pink-400",
-  salary: "bg-green-400",
-  other: "bg-gray-400",
+  Housing: "bg-red-400",
+  Food: "bg-orange-400",
+  Transport: "bg-blue-400",
+  Entertainment: "bg-purple-400",
+  Health: "bg-pink-400",
+  Salary: "bg-green-400",
+  Other: "bg-gray-400",
 };
 
 export default async function Dashboard() {

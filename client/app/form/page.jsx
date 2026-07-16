@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react"; 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const CATEGORIES = ["Housing", "Food", "Transport", "Entertainment", "Health", "Salary", "Other"];
 
@@ -13,6 +13,7 @@ function FormContent() {
     const [date, setDate] = useState("");
 
     const searchParams = useSearchParams();
+    const router = useRouter();
     const editId = searchParams.get("id");
 
     useEffect(() => {
@@ -38,7 +39,7 @@ function FormContent() {
 
         const method = editId ? "PUT" : "POST";
 
-        await fetch(url, {
+        const res = await fetch(url, {
             method: method,
             headers: { "Content-Type": "application/json" },
             credentials: 'include',
@@ -46,6 +47,12 @@ function FormContent() {
                 title, amount, type, category, date, created_at: new Date().toISOString()
             })
         });
+
+        if (!res.ok) {
+            return;
+        }
+
+        router.push("/dashboard");
     }   
 
     return (
