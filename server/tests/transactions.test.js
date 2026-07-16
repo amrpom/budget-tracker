@@ -29,7 +29,7 @@ describe('getAll', () => {
 
         await getAll(req, res);
 
-        expect(mockDb.query).toHaveBeenCalledWith('SELECT * FROM transactions WHERE user_id=$1', [1]);
+        expect(mockDb.query).toHaveBeenCalledWith('SELECT * FROM transactions WHERE user_id=$1 ORDER BY date DESC', [1]);
         expect(res.json).toHaveBeenCalledWith(fakeTransactions);
     });
 

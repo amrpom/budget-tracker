@@ -2,7 +2,7 @@ const db = require('../db');
 
 async function getAll(req, res) {
 	try {
-		const { category, from, to } = req.query;
+		const { category, from, to } = req.query || {};
 		let query = 'SELECT * FROM transactions WHERE user_id=$1';
 		const params = [req.userId];
 
@@ -18,7 +18,7 @@ async function getAll(req, res) {
 
 		if (to) {
 			params.push(to);
-			query += ` AND date <=$${params.lenghth}`;
+			query += ` AND date <=$${params.length}`;
 		}
 
 		query += ' ORDER BY date DESC'; // so newest is first
