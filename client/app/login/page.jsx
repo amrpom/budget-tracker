@@ -39,7 +39,7 @@ export default function Login() {
                     <div className="bg-red-50 text-red-600 text-sm rounded-lg px-4 py-2 mb-4">{error}</div>
                 )}
 
-                <div className="flex flex-col gap-4">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} className="flex flex-col gap-4">
                     <div>
                         <label className="text-xs font-medium text-gray-500 block mb-1">Email</label>
                         <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="your@example.com" className="w-full bg-gray-100 rounded-xl p-3 text-sm focus:outline-none"></input>
@@ -49,9 +49,9 @@ export default function Login() {
                         <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className="w-full bg-gray-100 rounded-xl p-3 text-sm focus:outline-none"></input>
                     </div>
 
-                    <button className="w-full bg-gray-900 text-white rounded-xl py-3 font-medium text-sm cursor-pointer mt-2" onClick={handleSubmit}>Sign in</button>
+                    <button type="submit" className="w-full bg-gray-900 text-white rounded-xl py-3 font-medium text-sm cursor-pointer mt-2">Sign in</button>
                     <p className="text-xs text-center text-gray-500">Don't have an account? <a href="/signup" className="text-blue-500">Sign up</a></p>
-                </div>
+                </form>
             </div>
         </div>
     );

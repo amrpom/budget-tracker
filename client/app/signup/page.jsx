@@ -41,7 +41,7 @@ export default function Signup() {
                     </div>
                 )}
 
-                <div className="flex flex-col gap-4">
+                <form onSubmit={(e) => { e.preventDefault(); handleSubmit();}} className="flex flex-col gap-4">
                     <div>
                         <label className="text-xs font-medium text-gray-500 block mb-1">Email</label>
                         <input
@@ -64,7 +64,7 @@ export default function Signup() {
                     </div>
 
                     <button
-                        onClick={handleSubmit}
+                        type="submit"
                         className="w-full bg-gray-900 text-white rounded-xl py-3 font-medium text-sm cursor-pointer mt-2"
                     >
                         Create account
@@ -74,7 +74,7 @@ export default function Signup() {
                         Already have an account?{" "}
                         <a href="/login" className="text-blue-500">Sign in</a>
                     </p>
-                </div>
+                </form>
             </div>
         </div>
     );

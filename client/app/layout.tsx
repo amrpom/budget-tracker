@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import LogoutButton from "./components/LogoutButton"
+import NavBar from "./components/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,14 +30,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <nav className="flex gap-4 items-center px-4 py-3 border-b border-gray-200 bg-white">
-            <Link href="/dashboard" className="text-sm font-medium text-gray-700">Overview</Link>
-            <Link href="/transactions" className="text-sm font-medium text-gray-700">Transactions</Link>
-            <Link href="/form" className="text-sm font-medium text-gray-700">Add</Link>
-            <div className="ml-auto">
-                <LogoutButton />
-            </div>
-        </nav> 
+        <NavBar />
         {children}
       </body>
     </html>
