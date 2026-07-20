@@ -73,13 +73,13 @@ function FormContent() {
                 <div className="relative">
                     {/* top-1/2 shifts top of span to 1/2 div height, then -translate-y-1/2 shifts it up 1/2 of the span's height so it sits in center*/}
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xl font-semibold text-gray-400">$</span>
-                    <input className="w-full bg-gray-700 rounded-xl pl-8 pr-3 py-3 text-xl font-semibold focus:outline-none" type="number" value={amount} placeholder="0.00" onChange={(e) => setAmount(e.target.value)}></input>
+                    <input className="w-full bg-gray-100 rounded-xl pl-8 pr-3 py-3 text-xl font-semibold focus:outline-none" type="number" value={amount} placeholder="0.00" onChange={(e) => setAmount(e.target.value)}></input>
                 </div>
             </div>
 
             <div className="mt-4">
                 <label className="text-xs font-medium text-gray-500 block mb-1">Title</label>
-                <input className="w-full bg-gray-700 rounded-xl p-3 text-xl font-semibold focus:outline-none" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="ex. groceries"></input>
+                <input className="w-full bg-gray-100 rounded-xl p-3 text-xl font-semibold focus:outline-none" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="ex. groceries"></input>
             </div>
 
             <div className="mt-4">
@@ -97,7 +97,7 @@ function FormContent() {
             <div className="mt-4">
                 <label className="text-xs font-medium text-gray-500 block mb-1">Date</label>
                 <div className="grid grid-cols-7 gap-2">
-                    <input className="w-full bg-gray-700 rounded-xl p-3 text-xl font-semibold focus:outline-none" type="date" value={date} onChange={(e) => setDate(e.target.value)}></input>
+                    <input className="w-full bg-gray-100 rounded-xl p-3 text-xl font-semibold focus:outline-none" type="date" value={date} onChange={(e) => setDate(e.target.value)}></input>
                 </div>
             </div>
 

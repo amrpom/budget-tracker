@@ -9,6 +9,9 @@ export default function NavBar() {
   const [email, setEmail] = useState(null);
 
   useEffect(() => {
+    const hasCookie = document.cookie.includes("token=");
+    if (!hasCookie) return; // stops 401 error in browser if user is not logged in for email display
+
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
       credentials: "include",
     })
