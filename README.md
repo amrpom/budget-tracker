@@ -6,8 +6,9 @@ A full-stack budget tracking app for managing income/expenses. Built with Next.j
 - Add, edit, and delete transactions (income or expense)
 - Categorize transactions (Housing, Food, Transport, Entertainment, Health, Salary, Other)
 - Dashboard with running balance, income/expense summary, and spending by category
-- Full transaction list with edit and delete actions
+- Full transaction list with edit and delete actions, plus filters per category and date range
 - Each user only sees their own info
+- Export transaction list to CSV (including filtered if applied)
 
 ## Tech Stack
 - **Frontend:** Next.js 15, Tailwind CSS
@@ -38,7 +39,7 @@ Requires Docker installed and running.
 - Passwords hashed with bcrypt before storage
 - Server sets HTTP only JWT cookie
 - Cookies sent with requests
-- Server middleware checks for the cookie
+- Server middleware checks for the cookie, redirects to /login if unauthenticated
 - Queries to DB filtered by user_id so viewers only see their own stuff
 
 ## Workflows
