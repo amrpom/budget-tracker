@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { Suspense } from "react";
 import Filters from "../components/Filters";
+import ExportButton from "../components/ExportButton";
 
 export default async function Transactions({ searchParams }) {
     const cookieStore = await cookies();
@@ -25,14 +26,16 @@ export default async function Transactions({ searchParams }) {
 
     return(
         <div className="p-4">
-            <h1 className="text-xl font-semibold mb-4">Transactions</h1>
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-xl font-semibold mb-4">Transactions</h1>
+                <ExportButton />
+            </div>
 
             {// Suspense cuz useSearchParams grabs url, which is not available during build time which is where useSearchParams lives 
             }
             <Suspense fallback={<div>Loading Filters...</div>}>
                 <Filters />
             </Suspense>
-
 
             <div className="bg-gray-100 rounded-xl p-4 text-black">
                 {transactions.length === 0 ? (

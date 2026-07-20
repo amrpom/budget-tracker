@@ -90,4 +90,57 @@ async function remove(req, res) {
 	}
 }
 
-module.exports = { getAll, getOne, create, update, remove };
+async function exportCSV(req, res) {
+	try {
+		const { category, from, to } = req.query;
+
+		let query = 'SELECT * FROM transactions WHERE user_id=$1';
+		const params = [req.userId];
+
+		if (category) {
+			params.push(category);
+			query += ` AND category=$${params.length}`;
+		}
+
+		if (from) {
+			params.push(from);
+			query += ` AND date>=$${params.length}`;
+		}
+
+		if (to) {
+			params.push(to);
+			query += ` AND date<=$${params.length}`;
+		}
+
+		query += ' ORDER BY date DESC';
+
+		const result = await db.query(query, params);
+		const headers = ['title', 'amount', 'type', 'category', 'date'];
+
+		/*
+			for each transaction
+				for each header, get the appropriate value. handle nulls with ?? and escape double quotes
+				join into csv string by delimiter ','
+			put each entry on new line with \n
+
+		*/
+		const rows = result.rows.map(transaction => {
+			const formatted = {
+				...transaction,
+				date: new Date(transaction.date).toLocaleDateString("en-GB")
+			};
+			return headers.map(header => `"${String(formatted[header] ?? '').replace(/"/g, '""')}"`).join(',');
+		});
+		const csv = [headers.join(','), ...rows].join('\n');
+
+		res.setHeader('Content-Type', 'text/csv');
+		res.setHeader('Content-Disposition', 'attachment; filename="transactions.csv"');
+		res.status(200).send(csv);
+	}
+	catch (err) {
+		console.error(err);
+		res.status(500).send('Internal server error');
+	}
+}
+
+module.exports = { getAll, getOne, create, update, remove, exportCSV };
